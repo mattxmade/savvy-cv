@@ -12,7 +12,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       inject: true,
       minify: false,
-      title: "Savvy CV",
+      title: "CV Savvy",
       template: "./src/index.html",
     }),
     new CopyPlugin({
