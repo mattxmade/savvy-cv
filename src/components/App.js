@@ -1,10 +1,8 @@
 import React, { Component } from "react";
-import styled from "styled-components";
 
-import About from "./About";
-import Statement from "./Statement";
-import Education from "./Education";
-import Experience from "./Experience";
+import Nav from "./Nav";
+import Aside from "./Aside";
+import Form from "./pages/form/Form";
 
 class App extends Component {
   constructor(props) {
@@ -12,30 +10,24 @@ class App extends Component {
 
     this.state = {
       sections: [],
+      cv: {
+        about: {},
+        skills: [],
+        statement: "",
+        education: [],
+        experience: [],
+      },
     };
   }
-
-  componentDidMount() {
-    this.setState({
-      sections: [<About />, <Statement />, <Education />, <Experience />],
-    });
-  }
-  componentDidUpdate(prevProps, prevState) {}
 
   render() {
     return (
       <div className="wrapper">
-        <header>
-          <h1>Savvy CV</h1>
-          <p>A CV building app</p>
-        </header>
+        <Nav />
+        <Aside />
 
         <main>
-          <ul>
-            {this.state.sections.map((section, index) => (
-              <li key={index}>{section}</li>
-            ))}
-          </ul>
+          <Form />
         </main>
       </div>
     );
