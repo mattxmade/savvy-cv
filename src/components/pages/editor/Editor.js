@@ -1,47 +1,81 @@
 import React, { Component } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { nanoid } from "nanoid";
 
-const about = (content) => (
+const About = (content) => (
   <ul className="format-ab">
+    {content.name ? (
+      <li>
+        <p>{content.name}</p>
+      </li>
+    ) : (
+      <p />
+    )}
+
     <li>
-      <p>{content.first + " " + content.last}</p>
-    </li>
-    <li>
-      <p>{content.email}</p>
-      <p>{content.telephone}</p>
+      {content.email ? (
+        <p>
+          <span>
+            <i className="fas fa-at"></i>
+          </span>
+          {content.email}
+        </p>
+      ) : (
+        ""
+      )}
+
+      {content.telephone ? (
+        <p>
+          <span style={{ left: 4 }}>
+            <i className="fas fa-mobile-alt"></i>
+          </span>
+          {content.telephone}
+        </p>
+      ) : (
+        ""
+      )}
+
+      {content.portfolio ? (
+        <p style={{ marginTop: 25 }}>
+          <span style={{ left: 3 }}>
+            <i className="fas fa-portrait"></i>
+          </span>
+          {content.portfolio}
+        </p>
+      ) : (
+        ""
+      )}
     </li>
   </ul>
 );
 
 const validIcon = (type) => {
   switch (type) {
-    case "twitter":
-      return <i className="fab fa-twitter-square"></i>;
-    case "instagram":
-      return <i className="fab fa-instagram-square"></i>;
-    case "github":
-      return <i className="fab fa-github-square"></i>;
+    case "Twitter":
+      return <i aria-hidden="true" className="fab fa-twitter-square"></i>;
+    case "Instagram":
+      return <i aria-hidden="true" className="fab fa-instagram-square"></i>;
+    case "GitHub":
+      return <i aria-hidden="true" className="fab fa-github-square"></i>;
     default:
-      return <i className="fas fa-globe"></i>;
+      return <i aria-hidden="true" className="fas fa-globe"></i>;
   }
 };
 
-const links = (content) => (
+const Links = (content) => (
   <ul className="format-lk">
     {content.map((link, index) => {
       const icon = validIcon(link.type);
       return (
         <li key={index}>
           <p>{icon ? icon : link.type + " "}</p>
-          <span>{link.handle}</span>
+          <span>{link.url}</span>
         </li>
       );
     })}
   </ul>
 );
 
-const skills = (content) => (
+const Skills = (content) => (
   <ul className="format-sk">
     {content.map((skill, index) => (
       <li key={index}>
@@ -51,9 +85,9 @@ const skills = (content) => (
   </ul>
 );
 
-const statement = (content) => <p className="format-st">{content}</p>;
+const Statement = (content) => <p className="format-st">{content}</p>;
 
-const education = (content) => (
+const Education = (content) => (
   <ul className="format-ed-list">
     {content.map((knowledge, index) => {
       return (
@@ -65,9 +99,10 @@ const education = (content) => (
               </li>
             ))}
           </ul>
+
           <ul>
             <li>
-              <h4>{knowledge.institute}</h4>
+              <h3>{knowledge.institute}</h3>
             </li>
             <li className="format-ed-date">
               <p>{knowledge.date.start}</p>
@@ -80,26 +115,25 @@ const education = (content) => (
   </ul>
 );
 
-const experience = (content) => (
+const Experience = (content) => (
   <ul className="format-xp-list">
     {content.map((xperience, index) => (
       <li className="format-xp-item" key={index}>
-        <h4>{xperience.job.title}</h4>
-
         <ul className="format-xp-job">
-          <li>
-            <p>{xperience.employer}</p>
+          <li className="job-title-li-cont">
+            <h3>{xperience.job.title}</h3>
           </li>
           <li>
             <p>{xperience.job.description}</p>
           </li>
         </ul>
 
-        <ul className="format-xp-date">
+        <ul>
           <li>
-            <p>{xperience.date.start}</p>
+            <h3>{xperience.employer}</h3>
           </li>
-          <li>
+          <li className="format-xp-date">
+            <p>{xperience.date.start}</p>
             <p>{xperience.date.end}</p>
           </li>
         </ul>
@@ -112,34 +146,52 @@ class Editor extends Component {
   constructor(props) {
     super(props);
 
-    const cvComponents = Array.from(this.props.cvComponents);
-    console.log(cvComponents);
-    console.log(this.props.cvComponents);
-
-    this.state = { cvComponents };
+    this.state = {
+      index: 1,
+    };
   }
+
+  componentDidMount() {
+    this.props.setPageIndex(1);
+  }
+
+  checkContent = (component) => {
+    switch (component.section) {
+      case "about":
+        let tally = 0;
+
+        for (const value of Object.values(component.content)) {
+          if (!value.length) tally++;
+        }
+
+        return tally !== 4 ? true : false;
+
+      default:
+        return component.content.length ? true : false;
+    }
+  };
 
   formatLayout = (component) => {
     switch (component.section) {
       case "about":
-        return about(component.content);
+        return About(component.content);
       case "links":
-        return links(component.content);
+        return Links(component.content);
       case "skills":
-        return skills(component.content);
+        return Skills(component.content);
       case "statement":
-        return statement(component.content);
+        return Statement(component.content);
       case "education":
-        return education(component.content);
+        return Education(component.content);
       case "experience":
-        return experience(component.content);
+        return Experience(component.content);
     }
   };
 
   handleOnDragEnd = (result) => {
     if (!result.destination) return;
 
-    const componentsArray = this.state.cvComponents;
+    const componentsArray = this.props.cvComponents;
     const newOrder = Array.from(componentsArray);
 
     const [reorderdItem] = newOrder.splice(result.source.index, 1);
@@ -149,15 +201,12 @@ class Editor extends Component {
       (item, index) => (item = newOrder[index])
     );
 
-    this.setState({ cvComponents: mapToArray });
     this.props.updateCvIndex(mapToArray);
   };
 
   render() {
-    if (this.props.page !== 2) return;
-
     return (
-      <div>
+      <div className="editor">
         <h2>CV Format Editor</h2>
         <DragDropContext onDragEnd={this.handleOnDragEnd}>
           <Droppable droppableId="editor-sections">
@@ -167,7 +216,9 @@ class Editor extends Component {
                 {...provided.droppableProps}
                 ref={provided.innerRef}
               >
-                {this.state.cvComponents.map((component, index) => {
+                {this.props.cvComponents.map((component, index) => {
+                  if (!this.checkContent(component)) return;
+
                   return (
                     <Draggable
                       key={component.id}
