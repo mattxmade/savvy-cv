@@ -5,9 +5,8 @@
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --progress --mode production",
-    "watch": "webpack --progress --watch --mode development",
-    "start": "webpack serve --open --mode development"
+    "build": "webpack --progress --config webpack.prod.js",
+    "start": "webpack serve --open --config webpack.dev.js"
   },
   "repository": {
     "type": "git",
@@ -30,13 +29,24 @@
     "html-webpack-plugin": "^5.5.0",
     "style-loader": "^3.3.1",
     "webpack": "^5.74.0",
+    "webpack-bundle-analyzer": "^4.6.1",
     "webpack-cli": "^4.10.0",
     "webpack-dev-server": "^4.9.3"
   },
   "dependencies": {
+    "@react-pdf/renderer": "^2.3.0",
+    "assert": "^2.0.0",
+    "browserify-zlib": "^0.2.0",
+    "buffer": "^6.0.3",
+    "date-fns": "^2.29.2",
+    "nanoid": "^4.0.0",
+    "process": "^0.11.10",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
+    "react-beautiful-dnd": "^13.1.0",
     "react-dom": "^18.2.0",
-    "styled-components": "^5.3.5"
+    "react-router-dom": "^6.3.0",
+    "stream-browserify": "^3.0.0",
+    "util": "^0.12.4"
   }
 }
