@@ -1,11 +1,13 @@
+import { element } from "prop-types";
 import React, { Component } from "react";
 import Input from "../inputs/Input";
 
 class Education extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      name: "",
+      institute: "",
       start: "",
       end: "",
       quals: [],
@@ -14,17 +16,49 @@ class Education extends Component {
 
       edit: { qual: false, edu: false },
       index: { qual: "", edu: "" },
+
+      icon: { section: "fa-plus-circle", subsection: "fa-plus-circle" },
+
+      qualSelect: 0,
     };
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    const checkIcon = document.querySelector(".check-edu");
-
-    checkIcon.style.color = "lightgrey";
-    if (this.state.education.length > 0) checkIcon.style.color = "green";
+  componentDidMount() {
+    this.setState({ education: this.props.input });
   }
 
-  validateInputs = () => {};
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState !== this.state) {
+      this.setCheckIconStyle("lightgrey");
+      if (this.state.education.length > 0) this.setCheckIconStyle("green");
+
+      if (this.state.education !== prevState.education) {
+        this.props.cb("education", this.state.education);
+      }
+    }
+
+    if (prevProps.input !== this.props.input) {
+      if (this.props.input.length === 0) {
+        this.setState({
+          institute: "",
+          start: "",
+          end: "",
+          quals: [],
+          qualification: "",
+          education: this.props.input,
+          edit: { qual: false, edu: false },
+          index: { qual: "", edu: "" },
+        });
+      }
+    }
+  }
+
+  setCheckIconStyle = (style) => {
+    const checkIcon = document.querySelector(".check-education");
+    const overviewCheck = document.querySelector(".aside-check-ed");
+
+    [checkIcon, overviewCheck].map((icon) => (icon.style.color = style));
+  };
 
   addQualification = (qual) => this.state.quals.concat(qual);
   updateQualification = (qual) => {
@@ -34,11 +68,14 @@ class Education extends Component {
     });
   };
 
-  submitQualification = (e) => {
+  submitQualification = () => {
     const qualification = this.state.qualification;
     const quals = this.state.quals;
 
-    if (quals.includes(qualification) || qualification === "") return;
+    if (qualification === "") return;
+
+    // if same index and already added?
+    //if (quals.includes(qualification) || qualification === "") return;
 
     const callback = this.state.edit.qual
       ? this.updateQualification
@@ -49,6 +86,10 @@ class Education extends Component {
       qualification: "",
       index: { qual: "", edu: this.state.index.edu },
       edit: { qual: false, edu: this.state.edit.edu },
+      icon: {
+        section: this.state.icon.section,
+        subsection: "fa-plus-circle",
+      },
     });
   };
 
@@ -57,12 +98,30 @@ class Education extends Component {
       qualification,
       index: { qual: index, edu: this.state.index.edu },
       edit: { qual: true, edu: this.state.edit.edu },
+      icon: {
+        section: this.state.icon.section,
+        subsection: "fa-pause-circle",
+      },
     });
   };
 
-  removeQual = (qualToRemove) => {
+  removeQual = (qualToRemove, qualIndex) => {
+    const { quals, index, edit, icon } = this.state;
+
+    if (qualIndex === this.state.index.qual) {
+      this.setState({
+        qualification: "",
+        index: { qual: "", edu: index.edu },
+        edit: { qual: false, edu: edit.edu },
+        icon: {
+          section: icon.section,
+          subsection: "fa-plus-circle",
+        },
+      });
+    }
+
     this.setState({
-      quals: this.state.quals.filter((qual) => qualToRemove !== qual),
+      quals: quals.filter((qual) => qualToRemove !== qual),
     });
   };
 
@@ -76,10 +135,11 @@ class Education extends Component {
   };
 
   processEducation = (e) => {
-    const { name, start, end, quals } = this.state;
-    if (!name.length || !start.length || !end.length || !quals.length) return;
+    const { institute, start, end, quals } = this.state;
+    if (!institute.length || !start.length || !end.length || !quals.length)
+      return;
 
-    const newSet = { name, date: { start, end }, quals };
+    const newSet = { institute, date: { start, end }, quals };
 
     const actionCb = this.state.edit.edu
       ? this.updateEducation
@@ -87,43 +147,98 @@ class Education extends Component {
 
     this.setState({
       education: actionCb(newSet),
-      name: "",
+      institute: "",
       start: "",
       end: "",
       qualification: "",
       quals: [],
       index: { qual: "", edu: "" },
       edit: { qual: false, edu: false },
+      icon: {
+        section: "fa-plus-circle",
+        subsection: "fa-plus-circle",
+      },
     });
   };
 
   editEducation = (item, index) => {
     this.setState({
-      index: { qual: this.state.index.qual, edu: index },
+      index: { qual: "", edu: index },
       edit: { qual: false, edu: true },
-      name: item.name,
+      institute: item.institute,
       start: item.date.start,
       end: item.date.end,
       quals: item.quals,
+      icon: {
+        section: "fa-pause-circle",
+        subsection: "fa-plus-circle",
+      },
     });
   };
 
   removeEducation = (itemToRemove, itemIndex) => {
     if (itemIndex === this.state.index.edu) {
       this.setState({
-        name: "",
+        institute: "",
         start: "",
         end: "",
         qualification: "",
         quals: [],
         index: { qual: "", edu: "" },
         edit: { qual: false, edu: false },
+        icon: {
+          section: "fa-plus-circle",
+          subsection: "fa-plus-circle",
+        },
       });
     }
 
     this.setState({
       education: this.state.education.filter((item) => itemToRemove !== item),
     });
+  };
+
+  clearFields = (e) => {
+    this.setState({
+      institute: "",
+      start: "",
+      end: "",
+      quals: [],
+      qualification: "",
+      education: [],
+
+      index: { qual: "", edu: "" },
+      edit: { qual: false, edu: false },
+
+      icon: {
+        section: "fa-plus-circle",
+        subsection: "fa-plus-circle",
+      },
+    });
+  };
+
+  resetSelect = (type) => {
+    const stateArray = type === "qual" ? "quals" : "education";
+
+    if (this.state[stateArray].length > 1) {
+      const elements = document.querySelectorAll(`.${type}-para`);
+      elements.forEach(
+        (element) => (element.style.backgroundColor = "rgb(0 0 0 / 50%)")
+      );
+    }
+
+    if (this.state[stateArray].length === 1) {
+      const element = document.querySelector(`.${type}-para`);
+      element.style.backgroundColor = "rgb(0 0 0 / 50%)";
+    }
+  };
+
+  setSelect = (element) => {
+    element.style.backgroundColor = "black";
+  };
+
+  lockData = (e) => {
+    this.props.updateLockState("education", !this.props.lockState);
   };
 
   render() {
@@ -134,15 +249,27 @@ class Education extends Component {
           <ul>
             <li>
               <i
-                className="fas fa-plus-circle add-edu"
-                onClick={this.processEducation}
+                className="fas fa-unlock state-education"
+                onClick={this.lockData}
               ></i>
             </li>
             <li>
-              <i className="fas fa-check-circle check-edu"></i>
+              <i
+                className={`fas ${this.state.icon.section} add-education`}
+                onClick={() => {
+                  this.processEducation();
+                  this.resetSelect("edu");
+                }}
+              ></i>
             </li>
             <li>
-              <i className="far fa-trash-alt clear-edu"></i>
+              <i className="fas fa-check-circle check-education"></i>
+            </li>
+            <li>
+              <i
+                className="far fa-trash-alt clear-education"
+                onClick={this.clearFields}
+              ></i>
             </li>
           </ul>
         </div>
@@ -152,10 +279,10 @@ class Education extends Component {
           <Input
             id="institution"
             type="text"
-            value={this.state.name}
+            value={this.state.institute}
             placeholder={"Institution"}
             label={"Institution"}
-            handleInput={(e) => this.setState({ name: e.target.value })}
+            handleInput={(e) => this.setState({ institute: e.target.value })}
           />
 
           <div className="study-dates">
@@ -192,19 +319,29 @@ class Education extends Component {
             />
 
             <i
-              className="fas fa-plus-circle"
-              onClick={(e) => this.submitQualification(e)}
+              className={`fas ${this.state.icon.subsection}`}
+              onClick={() => {
+                this.submitQualification();
+                this.resetSelect("qual");
+              }}
             ></i>
 
             <ul className="quals-container">
               {this.state.quals.map((qualification, index) => (
                 <li key={index} className="add-list-title">
-                  <p onClick={() => this.editQual(qualification, index)}>
+                  <p
+                    className="qual-para"
+                    onClick={(e) => {
+                      this.editQual(qualification, index);
+                      this.resetSelect("qual");
+                      this.setSelect(e.target);
+                    }}
+                  >
                     {qualification}
                   </p>
                   <i
                     className="fas fa-times-circle tag-icon"
-                    onClick={() => this.removeQual(qualification)}
+                    onClick={(e) => this.removeQual(qualification, index)}
                   ></i>
                 </li>
               ))}
@@ -215,10 +352,19 @@ class Education extends Component {
         <ul className="add-list">
           {this.state.education.map((item, index) => (
             <li key={index} className="add-list-title">
-              <p onClick={() => this.editEducation(item, index)}>{item.name}</p>
+              <p
+                className="edu-para"
+                onClick={(e) => {
+                  this.editEducation(item, index);
+                  this.resetSelect("edu");
+                  this.setSelect(e.target);
+                }}
+              >
+                {item.institute}
+              </p>
               <i
                 className="fas fa-times-circle tag-icon"
-                onClick={() => this.removeEducation(item, index)}
+                onClick={(e) => this.removeEducation(item, index)}
               ></i>
             </li>
           ))}
