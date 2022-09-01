@@ -5,7 +5,7 @@ const FormIcon = (props) => (
   <li>
     <i
       aria-hidden="true"
-      className="far fa-edit"
+      className="fas fa-user-edit"
       onClick={() => props.navToPage(0)}
     ></i>
   </li>
@@ -15,7 +15,7 @@ const LayoutIcon = (props) => (
   <li>
     <i
       aria-hidden="true"
-      className="far fa-save"
+      className="far fa-list-alt"
       onClick={() => props.navToPage(1)}
     ></i>
   </li>
@@ -25,7 +25,7 @@ const PdfIcon = (props) => (
   <li>
     <i
       aria-hidden="true"
-      className="far fa-file-pdf"
+      className="far fa-save"
       onClick={() => props.navToPage(2)}
     ></i>
   </li>
@@ -43,6 +43,7 @@ const ClearIcon = (props) => (
 
 const linkStyle = {
   color: "black",
+  textDecoration: "none",
 };
 
 const StandardNav = (props) => (
