@@ -7,6 +7,8 @@ import Statement from "./parts/Statement";
 import Education from "./parts/Education";
 import Experience from "./parts/Experience";
 
+const lockState = JSON.parse(localStorage.getItem("lockState"));
+
 class Form extends Component {
   constructor(props) {
     super(props);
@@ -14,14 +16,16 @@ class Form extends Component {
     this.state = {
       index: 0,
 
-      fieldsetLockState: {
-        about: false,
-        links: false,
-        skills: false,
-        statement: false,
-        education: false,
-        experience: false,
-      },
+      fieldsetLockState: lockState
+        ? lockState
+        : {
+            about: false,
+            links: false,
+            skills: false,
+            statement: false,
+            education: false,
+            experience: false,
+          },
 
       cvData: this.props.cvData,
     };
@@ -38,6 +42,13 @@ class Form extends Component {
   componentDidUpdate(prevProps, prevState) {
     for (const [key, value] of Object.entries(this.state.fieldsetLockState)) {
       this.updateIcons(key, value);
+    }
+
+    if (this.state !== prevState) {
+      localStorage.setItem(
+        "lockState",
+        JSON.stringify(this.state.fieldsetLockState)
+      );
     }
   }
 
