@@ -50,43 +50,7 @@ const education = {
   content: [
     {
       institute: "Starfleet Academy",
-      date: { start: "2024-08-15", end: "2030-08-19" },
-      quals: [
-        "2.1 BA Space Studies",
-        "MA Intergalatic Peacekeeping",
-        "PHD New Worlds",
-      ],
-    },
-    {
-      institute: "Starfleet Academy",
-      date: { start: "2024-08-15", end: "2030-08-19" },
-      quals: [
-        "2.1 BA Space Studies",
-        "MA Intergalatic Peacekeeping",
-        "PHD New Worlds",
-      ],
-    },
-    {
-      institute: "Starfleet Academy",
-      date: { start: "2024-08-15", end: "2030-08-19" },
-      quals: [
-        "2.1 BA Space Studies",
-        "MA Intergalatic Peacekeeping",
-        "PHD New Worlds",
-      ],
-    },
-    {
-      institute: "Starfleet Academy",
-      date: { start: "2024-08-15", end: "2030-08-19" },
-      quals: [
-        "2.1 BA Space Studies",
-        "MA Intergalatic Peacekeeping",
-        "PHD New Worlds",
-      ],
-    },
-    {
-      institute: "Starfleet Academy",
-      date: { start: "2024-08-15", end: "2030-08-19" },
+      date: { start: "2250-08-15", end: "2054-08-19" },
       quals: [
         "2.1 BA Space Studies",
         "MA Intergalatic Peacekeeping",
@@ -102,7 +66,7 @@ const experience = {
   content: [
     {
       employer: "Starfleet",
-      date: { start: "2030-08-15", end: "2045-08-19" },
+      date: { start: "2264-08-15", end: "2269-08-19" },
       job: {
         title: "Captain",
         description:
@@ -111,6 +75,9 @@ const experience = {
     },
   ],
 };
+
+const cvData = JSON.parse(localStorage.getItem("cvData"));
+const cvComponents = JSON.parse(localStorage.getItem("cvComponents"));
 
 class App extends Component {
   constructor(props) {
@@ -124,14 +91,16 @@ class App extends Component {
       pdfReady: null,
       touch: isTouchDevice() ? true : false,
 
-      cv: {
-        about: about,
-        links: links,
-        skills: skills,
-        statement: statement,
-        education: education,
-        experience: experience,
-      },
+      cv: cvData
+        ? cvData
+        : {
+            about: about,
+            links: links,
+            skills: skills,
+            statement: statement,
+            education: education,
+            experience: experience,
+          },
     };
   }
 
@@ -140,20 +109,30 @@ class App extends Component {
       this.state.cv;
 
     this.setState({
-      cvComponents: this.state.cvComponents.concat(
-        about,
-        links,
-        skills,
-        statement,
-        education,
-        experience
-      ),
+      cvComponents: cvComponents
+        ? cvComponents
+        : this.state.cvComponents.concat(
+            about,
+            links,
+            skills,
+            statement,
+            education,
+            experience
+          ),
     });
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.index !== this.state.index) {
       this.setMaxWidth();
+    }
+
+    if (this.state.cvComponents !== prevState.cvComponents) {
+      localStorage.setItem("cvData", JSON.stringify(this.state.cv));
+      localStorage.setItem(
+        "cvComponents",
+        JSON.stringify(this.state.cvComponents)
+      );
     }
   }
 
@@ -206,7 +185,9 @@ class App extends Component {
   };
 
   // Editor
-  updateCvIndex = (array) => this.setState({ cvComponents: array });
+  updateCvIndex = (array) => {
+    this.setState({ cvComponents: array });
+  };
 
   render() {
     return (
@@ -240,6 +221,7 @@ class App extends Component {
                 path="editor"
                 element={
                   <Editor
+                    touch={this.state.touch}
                     cvComponents={this.state.cvComponents}
                     updateCvIndex={this.updateCvIndex}
                     setPageIndex={(index) => this.setState({ index })}
@@ -251,6 +233,7 @@ class App extends Component {
                 element={
                   <React.StrictMode>
                     <Viewer
+                      page={this.state.index}
                       touch={this.state.touch}
                       cvComponents={this.state.cvComponents}
                       setPageIndex={(index) => this.setState({ index })}
