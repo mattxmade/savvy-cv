@@ -28,6 +28,7 @@ module.exports = {
       inject: true,
       minify: false,
       title: "CV Savvy",
+      favicon: "./src/favicon.ico",
       template: "./src/index.html",
     }),
     new CopyPlugin({
