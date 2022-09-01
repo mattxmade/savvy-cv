@@ -49,29 +49,30 @@ const Segment = (() => {
   );
 
   const validIcon = (type) => {
+    console.log(type);
     switch (type) {
       case "Discord":
-        return <i aria-hidden="true" className="fab fa-discord-square"></i>;
+        return <i aria-hidden="true" className="fab fa-discord"></i>;
       case "Facebook":
-        return <i aria-hidden="true" className="fab fa-facebook-square"></i>;
+        return <i aria-hidden="true" className="fab fa-facebook"></i>;
       case "GitHub":
-        return <i aria-hidden="true" className="fab fa-github-square"></i>;
+        return <i aria-hidden="true" className="fab fa-github"></i>;
       case "Instagram":
-        return <i aria-hidden="true" className="fab fa-instagram-square"></i>;
+        return <i aria-hidden="true" className="fab fa-instagram"></i>;
       case "LinkedIn":
-        return <i aria-hidden="true" className="fab fa-linkedin-square"></i>;
+        return <i aria-hidden="true" className="fab fa-linkedin"></i>;
       case "Pinterest":
-        return <i aria-hidden="true" className="fab fa-pinterest-square"></i>;
+        return <i aria-hidden="true" className="fab fa-pinterest"></i>;
       case "Snapchat":
-        return <i aria-hidden="true" className="fab fa-snapchat-square"></i>;
+        return <i aria-hidden="true" className="fab fa-snapchat"></i>;
       case "TikTok":
-        return <i aria-hidden="true" className="fab fa-tiktok-square"></i>;
+        return <i aria-hidden="true" className="fab fa-tiktok"></i>;
       case "Twitter":
         return <i aria-hidden="true" className="fab fa-twitter"></i>;
       case "WhatsApp":
-        return <i aria-hidden="true" className="fab fa-whatsapp-square"></i>;
+        return <i aria-hidden="true" className="fab fa-whatsapp"></i>;
       case "YouTube":
-        return <i aria-hidden="true" className="fab fa-youtube-square"></i>;
+        return <i aria-hidden="true" className="fab fa-youtube"></i>;
 
       default:
         return <i aria-hidden="true" className="fas fa-globe"></i>;
