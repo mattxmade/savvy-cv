@@ -78,7 +78,7 @@ nav {
 }
 @media (max-width: 975px) {
   nav {
-    padding: 0 3rem 2rem;
+    padding: 0 2rem 2rem;
   }
 }
 
@@ -95,29 +95,45 @@ nav .logo {
   }
 }
 
-nav ul {
-  gap: 4rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  border-radius: var(--border-radius);
-  background-color: rgba(55, 241, 241, 0.1);
-  border-bottom: 0.5rem solid lightgrey;
-  box-shadow: 0 0 0.1rem 0.05rem rgba(211, 211, 211, 0.5);
-}
-@media (max-width: 975px) {
-  nav ul {
-    padding: 1rem;
-    align-self: flex-end;
-  }
-}
-
 .logo p {
   font-weight: 500;
   font-size: 1.5rem;
   left: 1rem;
   position: relative;
+}
+
+nav ul {
+  gap: 4rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  border-bottom: 0.5rem solid lightgrey;
+  background-color: rgba(55, 241, 241, 0.1);
+  box-shadow: 0 0 0.1rem 0.05rem rgba(211, 211, 211, 0.5);
+}
+@media (max-width: 975px) {
+  nav ul {
+    gap: 1.5rem;
+    padding: 1rem;
+    align-self: flex-end;
+  }
+}
+nav ul li {
+  display: grid;
+  display: flex;
+  place-content: center;
+  position: relative;
+}
+nav ul i {
+  font-size: 2.5rem;
+}
+@media (max-width: 975px) {
+  nav ul i {
+    font-size: 2.2rem;
+  }
 }
 
 /*=======
@@ -133,6 +149,9 @@ aside {
 @media (max-width: 975px) {
   aside {
     margin: 2rem 0;
+    position: absolute;
+    left: -100vw;
+    visibility: hidden;
   }
 }
 
@@ -168,7 +187,10 @@ aside li {
 aside p {
   font-weight: bold;
   width: 8rem;
-  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
   text-align: center;
   margin-right: 0.5rem;
   border-radius: var(--border-radius);
@@ -212,6 +234,7 @@ main i {
 }
 @media (max-width: 975px) {
   main {
+    margin-top: 2rem;
     max-width: 100vw;
     padding: 0;
   }
@@ -707,6 +730,11 @@ input[type=date] {
   margin-bottom: 4rem;
 }
 
+.instructions {
+  position: absolute;
+  top: 8rem;
+}
+
 .editor-sections {
   flex: 1;
   height: 100%;
@@ -901,4 +929,36 @@ iframe {
 ::-webkit-scrollbar-thumb {
   background-color: lightgrey;
   border: transparent;
+}
+
+.btn-link {
+  outline: none;
+  border: var(--border-radius) solid var(--main-brand);
+}
+
+.message {
+  font-size: 2.5rem;
+  margin: 5rem 0;
+  font-weight: bold;
+}
+
+.pdf-anchor {
+  gap: 0.5rem;
+  display: grid;
+  justify-self: center;
+  width: 14rem;
+  padding: 1.5rem 0;
+  color: black;
+  font-size: 1.8rem;
+  text-align: center;
+  font-weight: 600;
+  text-decoration: none;
+  outline: none;
+  border-radius: var(--border-radius);
+  background-color: rgba(55, 241, 241, 0.1);
+  border-bottom: 0.5rem solid lightgrey;
+  box-shadow: 0 0 0.1rem 0.05rem rgba(211, 211, 211, 0.5);
+}
+.pdf-anchor i {
+  font-size: 3rem;
 }/*# sourceMappingURL=style.css.map */
