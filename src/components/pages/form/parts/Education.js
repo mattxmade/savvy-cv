@@ -18,8 +18,6 @@ class Education extends Component {
       index: { qual: "", edu: "" },
 
       icon: { section: "fa-plus-circle", subsection: "fa-plus-circle" },
-
-      qualSelect: 0,
     };
   }
 
@@ -217,23 +215,25 @@ class Education extends Component {
     });
   };
 
-  resetSelect = (type) => {
-    const stateArray = type === "qual" ? "quals" : "education";
-
-    if (this.state[stateArray].length > 1) {
-      const elements = document.querySelectorAll(`.${type}-para`);
-      elements.forEach(
-        (element) => (element.style.backgroundColor = "rgb(0 0 0 / 50%)")
-      );
-    }
-
-    if (this.state[stateArray].length === 1) {
-      const element = document.querySelector(`.${type}-para`);
-      element.style.backgroundColor = "rgb(0 0 0 / 50%)";
-    }
+  resetQualHightlight = () => {
+    const elements = Array.from(document.querySelectorAll(".qual-para"));
+    elements.map(
+      (element) => (element.style.backgroundColor = "rgb(0 0 0 / 0.5)")
+    );
   };
 
-  setSelect = (element) => {
+  setQualHighlight = (element) => {
+    element.style.backgroundColor = "black";
+  };
+
+  resetEducHighlight = () => {
+    const elements = Array.from(document.querySelectorAll(".edu-para"));
+    elements.map((element) => {
+      element.style.backgroundColor = "rgb(0 0 0 / 0.5)";
+    });
+  };
+
+  setEducHighlight = (element) => {
     element.style.backgroundColor = "black";
   };
 
@@ -258,7 +258,7 @@ class Education extends Component {
                 className={`fas ${this.state.icon.section} add-education`}
                 onClick={() => {
                   this.processEducation();
-                  this.resetSelect("edu");
+                  this.resetEducHighlight();
                 }}
               ></i>
             </li>
@@ -322,7 +322,7 @@ class Education extends Component {
               className={`fas ${this.state.icon.subsection}`}
               onClick={() => {
                 this.submitQualification();
-                this.resetSelect("qual");
+                this.resetQualHightlight();
               }}
             ></i>
 
@@ -332,16 +332,19 @@ class Education extends Component {
                   <p
                     className="qual-para"
                     onClick={(e) => {
+                      this.resetQualHightlight();
+                      this.setQualHighlight(e.target);
                       this.editQual(qualification, index);
-                      this.resetSelect("qual");
-                      this.setSelect(e.target);
                     }}
                   >
                     {qualification}
                   </p>
                   <i
                     className="fas fa-times-circle tag-icon"
-                    onClick={(e) => this.removeQual(qualification, index)}
+                    onClick={(e) => {
+                      this.resetQualHightlight();
+                      this.removeQual(qualification, index);
+                    }}
                   ></i>
                 </li>
               ))}
@@ -353,18 +356,22 @@ class Education extends Component {
           {this.state.education.map((item, index) => (
             <li key={index} className="add-list-title">
               <p
+                id={item.id}
                 className="edu-para"
                 onClick={(e) => {
+                  this.resetEducHighlight();
+                  this.setEducHighlight(e.target);
                   this.editEducation(item, index);
-                  this.resetSelect("edu");
-                  this.setSelect(e.target);
                 }}
               >
                 {item.institute}
               </p>
               <i
                 className="fas fa-times-circle tag-icon"
-                onClick={(e) => this.removeEducation(item, index)}
+                onClick={(e) => {
+                  this.resetEducHighlight();
+                  this.removeEducation(item, index);
+                }}
               ></i>
             </li>
           ))}
