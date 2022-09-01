@@ -37,8 +37,8 @@ class Skills extends Component {
           title: "",
           skill: "",
           skills: this.props.input,
-          edit: { skill: false, skills: false },
-          index: { skill: "", skills: "" },
+          edit: false,
+          index: "",
           icon: "fa-plus-circle",
         });
       }
@@ -55,7 +55,7 @@ class Skills extends Component {
   addSkill = (skill) => this.state.skills.concat(skill);
   updateSkill = (skill) => {
     return this.state.skills.map((item, index) => {
-      if (index === this.state.index.skill) item = skill;
+      if (index === this.state.index) item = skill;
       return item;
     });
   };
@@ -63,13 +63,13 @@ class Skills extends Component {
   submitSkill = () => {
     if (this.state.skill === "") return;
 
-    const callback = this.state.edit.skill ? this.updateSkill : this.addSkill;
+    const callback = this.state.edit ? this.updateSkill : this.addSkill;
 
     this.setState({
       skills: callback(this.state.skill),
       skill: "",
-      index: { skill: "", links: this.state.index.links },
-      edit: { skill: false, links: this.state.edit.links },
+      index: "",
+      edit: false,
       icon: "fa-plus-circle",
     });
 
@@ -79,21 +79,21 @@ class Skills extends Component {
   editSkill = (skill, index) => {
     this.setState({
       skill,
-      index: { skill: index, links: this.state.index.links },
-      edit: { skill: true, links: this.state.edit.links },
+      index,
+      edit: true,
       icon: "fa-pause-circle",
     });
   };
 
   removeSkill = (skillToRemove, skillIndex) => {
-    const { skills, index, edit } = this.state;
+    const { skills, index } = this.state;
 
     if (skillIndex === index) {
       this.setState({
         skill: "",
         icon: "fa-plus-circle",
-        index: { skill: "", links: index.links },
-        edit: { skill: false, links: edit.links },
+        index: "",
+        edit: false,
       });
     }
 
@@ -107,12 +107,38 @@ class Skills extends Component {
       title: "",
       skill: "",
       skills: [],
-      edit: { skill: false, skills: false },
-      index: { skill: "", skills: "" },
+      edit: false,
+      index: "",
       icon: "fa-plus-circle",
     });
 
     this.props.cb("skills", this.state.skills);
+  };
+
+  resetSelect = (type, index) => {
+    const stateArray = "skills";
+
+    if (this.state[stateArray].length > 1) {
+      const elements = document.querySelectorAll(`.${type}-para`);
+
+      elements.forEach((element) => {
+        element.style.backgroundColor = "rgb(0 0 0 / 0.5)";
+      });
+
+      if (Number(index) && index !== this.state.index) {
+        if (this.state.index !== "")
+          elements[this.state.index].style.backgroundColor = "black";
+      }
+    }
+
+    if (this.state[stateArray].length === 1) {
+      const element = document.querySelector(`.${type}-para`);
+      element.style.backgroundColor = "rgb(0 0 0 / 0.5)";
+    }
+  };
+
+  setSelect = (element) => {
+    element.style.backgroundColor = "black";
   };
 
   lockData = (e) => {
@@ -165,17 +191,32 @@ class Skills extends Component {
             <i
               aria-hidden="true"
               className={`fas ${this.state.icon}`}
-              onClick={() => this.submitSkill()}
+              onClick={(e) => {
+                this.submitSkill();
+                this.resetSelect("skill", "null");
+              }}
             ></i>
 
             <ul className="skills-container">
               {this.state.skills.map((skill, index) => (
                 <li key={index} className="add-list-title">
-                  <p onClick={() => this.editSkill(skill, index)}>{skill}</p>
+                  <p
+                    className="skill-para"
+                    onClick={(e) => {
+                      this.editSkill(skill, index);
+                      this.resetSelect("skill", "null");
+                      this.setSelect(e.target);
+                    }}
+                  >
+                    {skill}
+                  </p>
                   <i
                     aria-hidden="true"
                     className="fas fa-times-circle tag-icon"
-                    onClick={() => this.removeSkill(skill, index)}
+                    onClick={(e) => {
+                      this.resetSelect("skill", index);
+                      this.removeSkill(skill, index);
+                    }}
                   ></i>
                 </li>
               ))}
