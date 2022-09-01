@@ -26,8 +26,8 @@ class Links extends Component {
       link: {},
       links: [],
 
-      edit: { link: false, links: false },
-      index: { link: "", links: "" },
+      edit: false,
+      index: "",
 
       icon: "fa-plus-circle",
     };
@@ -54,8 +54,8 @@ class Links extends Component {
           type: "Website",
           link: {},
           links: this.props.input,
-          edit: { link: false, links: false },
-          index: { link: "", links: "" },
+          edit: false,
+          index: "",
           icon: "fa-plus-circle",
         });
       }
@@ -72,7 +72,7 @@ class Links extends Component {
   addLink = (link) => this.state.links.concat(link);
   updateLink = (link) => {
     return this.state.links.map((item, index) => {
-      if (index === this.state.index.link) item = link;
+      if (index === this.state.index) item = link;
       return item;
     });
   };
@@ -84,15 +84,15 @@ class Links extends Component {
     const type = this.state.type;
     const linkset = { type, url };
 
-    const callback = this.state.edit.link ? this.updateLink : this.addLink;
+    const callback = this.state.edit ? this.updateLink : this.addLink;
 
     this.setState({
       links: callback(linkset),
       url: "",
       type: "Website",
       link: {},
-      index: { link: "", links: this.state.index.links },
-      edit: { link: false, links: this.state.edit.links },
+      index: "",
+      edit: false,
       icon: "fa-plus-circle",
     });
   };
@@ -102,8 +102,8 @@ class Links extends Component {
       link,
       url: link.url,
       type: link.type,
-      index: { link: index, links: this.state.index.links },
-      edit: { link: true, links: this.state.edit.links },
+      index,
+      edit: true,
       icon: "fa-pause-circle",
     });
   };
@@ -117,8 +117,8 @@ class Links extends Component {
         url: "",
         type: "Website",
         icon: "fa-plus-circle",
-        index: { link: "", links: index.links },
-        edit: { link: false, links: edit.links },
+        index: "",
+        edit: false,
       });
     }
 
@@ -133,8 +133,8 @@ class Links extends Component {
       type: "Website",
       link: {},
       links: [],
-      edit: { link: false, links: false },
-      index: { link: "", links: "" },
+      edit: false,
+      index: "",
       icon: "fa-plus-circle",
     });
   };
@@ -142,6 +142,32 @@ class Links extends Component {
   setDropdownIcon = () => {
     if (this.state.type === "Website") return <i className={`fas fa-globe`} />;
     return <i className={`fab fa-${this.state.type.toLowerCase()}`} />;
+  };
+
+  resetSelect = (type, index) => {
+    const stateArray = "links";
+
+    if (this.state[stateArray].length > 1) {
+      const elements = document.querySelectorAll(`.${type}-para`);
+
+      elements.forEach((element) => {
+        element.style.backgroundColor = "rgb(0 0 0 / 0.5)";
+      });
+
+      if (Number(index) && index !== this.state.index) {
+        if (this.state.index !== "")
+          elements[this.state.index].style.backgroundColor = "black";
+      }
+    }
+
+    if (this.state[stateArray].length === 1) {
+      const element = document.querySelector(`.${type}-para`);
+      element.style.backgroundColor = "rgb(0 0 0 / 0.5)";
+    }
+  };
+
+  setSelect = (element) => {
+    element.style.backgroundColor = "black";
   };
 
   lockData = (e) => {
@@ -209,20 +235,33 @@ class Links extends Component {
             <i
               aria-hidden="true"
               className={`fas ${this.state.icon}`}
-              onClick={() => this.submitLink()}
+              onClick={(e) => {
+                this.submitLink();
+                this.resetSelect("link", "null");
+              }}
             ></i>
 
             <ul className="links-container">
               {this.state.links.map((link, index) => {
                 return (
                   <li key={index} className="add-list-title">
-                    <p onClick={() => this.editLink(link, index)}>
+                    <p
+                      className="link-para"
+                      onClick={(e) => {
+                        this.editLink(link, index);
+                        this.resetSelect("link", "null");
+                        this.setSelect(e.target);
+                      }}
+                    >
                       {link.type}
                     </p>
                     <i
                       aria-hidden="true"
                       className="fas fa-times-circle tag-icon"
-                      onClick={() => this.removeLink(link, index)}
+                      onClick={(e) => {
+                        this.resetSelect("link", index);
+                        this.removeLink(link, index);
+                      }}
                     ></i>
                   </li>
                 );
