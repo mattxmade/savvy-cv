@@ -4,31 +4,35 @@ import Input from "../inputs/Input";
 class About extends Component {
   constructor(props) {
     super(props);
+
+    const { name, email, telephone, portfolio } = this.props.input;
+
     this.state = {
-      name: "",
-      email: "",
-      telephone: "",
-      portfolio: "",
+      name,
+      email,
+      telephone,
+      portfolio,
       valid: false,
     };
   }
 
   componentDidMount() {
-    const { name, email, telephone, portfolio } = this.props.input;
-    this.setState({ name, email, telephone, portfolio });
-
     this.processAbout();
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.input !== this.props.input) {
+      let count = 0;
+
       for (const [key, value] of Object.entries(this.props.input)) {
+        if (value !== "") count++;
         if (prevProps.input[key] !== value) {
           this.setState({
             [key]: value,
           });
         }
       }
+      if (count !== 4) this.setCheckIconStyle("lightgrey");
     }
   }
 
@@ -78,8 +82,8 @@ class About extends Component {
       telephone: "",
       portfolio: "",
     });
-    this.setState({ name: "", email: "", telephone: "", portfolio: "" });
 
+    this.setState({ name: "", email: "", telephone: "", portfolio: "" });
     this.processAbout();
   };
 
@@ -118,7 +122,7 @@ class About extends Component {
             value={this.state.name}
             handleInput={(e) => {
               if (!this.props.lockState) {
-                this.setState({ name: e.target.value.trim() });
+                this.setState({ name: e.target.value });
                 this.processAbout();
               }
             }}
