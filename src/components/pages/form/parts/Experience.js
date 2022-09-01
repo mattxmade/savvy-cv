@@ -15,6 +15,8 @@ class Experience extends Component {
 
       edit: false,
       index: "",
+
+      icon: "fa-plus-circle",
     };
   }
 
@@ -97,6 +99,7 @@ class Experience extends Component {
       jobs: [],
       index: "",
       edit: false,
+      icon: "fa-plus-circle",
     });
   };
 
@@ -109,6 +112,7 @@ class Experience extends Component {
       end: history.date.end,
       title: history.job.title,
       description: history.job.description,
+      icon: "fa-pause-circle",
     });
   };
 
@@ -122,6 +126,7 @@ class Experience extends Component {
         description: "",
         index: "",
         edit: false,
+        icon: "fa-plus-circle",
       });
     }
 
@@ -141,11 +146,38 @@ class Experience extends Component {
 
       index: "",
       edit: false,
+      icon: "fa-plus-circle",
     });
   };
 
   lockData = (e) => {
     this.props.updateLockState("experience", !this.props.lockState);
+  };
+
+  resetSelect = (type, index) => {
+    const stateArray = "experience";
+
+    if (this.state[stateArray].length > 1) {
+      const elements = document.querySelectorAll(`.${type}-para`);
+
+      elements.forEach(
+        (element) => (element.style.backgroundColor = "rgb(0 0 0 / 0.5)")
+      );
+
+      if (Number(index) && index !== this.state.index) {
+        if (this.state.index !== "")
+          elements[this.state.index].style.backgroundColor = "black";
+      }
+    }
+
+    if (this.state[stateArray].length === 1) {
+      const element = document.querySelector(`.${type}-para`);
+      element.style.backgroundColor = "rgb(0 0 0 / 0.5)";
+    }
+  };
+
+  setSelect = (element) => {
+    element.style.backgroundColor = "black";
   };
 
   render() {
@@ -163,7 +195,10 @@ class Experience extends Component {
             <li>
               <i
                 className="fas fa-plus-circle add-experience"
-                onClick={this.processExperience}
+                onClick={() => {
+                  this.processExperience();
+                  this.resetSelect("exp", "null");
+                }}
               ></i>
             </li>
             <li>
@@ -240,12 +275,22 @@ class Experience extends Component {
         <ul className="add-list">
           {this.state.experience.map((job, index) => (
             <li key={index} className="add-list-title">
-              <p onClick={() => this.editExperience(job, index)}>
+              <p
+                className="exp-para"
+                onClick={(e) => {
+                  this.editExperience(job, index);
+                  this.resetSelect("exp", "null");
+                  this.setSelect(e.target);
+                }}
+              >
                 {job.employer}
               </p>
               <i
                 className="fas fa-times-circle tag-icon"
-                onClick={() => this.removeExperience(job, index)}
+                onClick={(e) => {
+                  this.resetSelect("exp", index);
+                  this.removeExperience(job, index);
+                }}
               ></i>
             </li>
           ))}
