@@ -1,7 +1,9 @@
 # savvy-cv
 A CV generator, built using React.
-<br> <br>
-<h2>Development Environment</h2>
+
+<strong>Live: </strong> <a href="https://mattxmade.github.io/savvy-cv/dist/index.html" target="_blank"> <strong>CV Savvy</strong></a>
+
+## Development Environment
 <h3>Dependencies</h3>
 <ul>
   <li>React</li>
