@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/97047080/231761599-29812e1f-41a9-4b8e-b3d3-787d692f3331.svg" width="500" />
+</p>
+
 # savvy-cv
 A CV generator, built using React.
 
