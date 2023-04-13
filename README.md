@@ -14,6 +14,12 @@ A CV generator, built using React.
   <li>React DOM</li>
 </ul>
 
+<h3>Libraries</h3>
+<ul>
+  <li>react-pdf</li>
+  <li>react-beautiful-dnd</li>
+</ul>
+
 <h3>Build Tools</h3>
 <ul>
   <li>Webpack</li>
