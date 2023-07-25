@@ -1,5 +1,5 @@
 <a href="#"><img src="https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB" alt="react-badge"/></a>
-# <a href="#"></a>CV Savvy | <a href="https://mattxmade.github.io/savvy-cv" target="_blank"> <strong>Live</strong></a>
+# <a href="#"></a>Savvy CV | <a href="https://mattxmade.github.io/savvy-cv" target="_blank"> <strong>Live</strong></a>
 
 > ### Build, edit and generate CVs effortlessly
 
