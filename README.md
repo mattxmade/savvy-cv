@@ -56,17 +56,17 @@ The form page is composed of six sections. Section data can be saved as tags for
     <tr><td colspan=2></td></tr>
     <tr>
       <td align=center><strong>CV Form</strong></td>
-      <td>Detailed form with recall system</td>
+      <td>Detailed form page with data recall & tag system</td>
     </tr>
     <tr><td colspan=2></td></tr>
     <tr>
       <td align=center><strong>CV Layout Editor</strong></td>
-      <td>Reorder CV sections using drag and drop</td>
+      <td>Realtime CV section reordering using drag & drop</td>
     </tr>
     <tr><td colspan=2></td></tr>
     <tr>
       <td align=center><strong>PDF Generation</strong></td>
-      <td>Preview and download completed CVs in PDF format</td>
+      <td>PDF previewer with option to download completed CV</td>
     </tr>
     <tr><td colspan=2></td></tr>
   </tbody>
