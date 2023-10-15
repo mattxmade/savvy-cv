@@ -185,15 +185,20 @@ States can be passed to child Components through props. The above update handler
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Form Page
-[comment]: <> (A form section can trigger cvData to be updated. For the majority of form sections, a trigger occurs when the user completes a form section and clicks the "+" icon button, submitting the data.)
+The form page is broken into component sections. 
 
-> #### The form page is broken into component sections.
-> A section can be muted, ommiting its data from inclusion and also locked to prevent further editing or accidental deletion.
-> A tagging system allows multiple datasets to be added, allowing data to be swapped in and out quickly without the need to re-enter information again.
-> 
-> ## Planning
+A section can be muted, ommiting its data from inclusion and also locked to prevent further editing or accidental deletion.
+A tagging system allows multiple datasets to be added, allowing data to be swapped in and out quickly without the need to re-enter information again.
+
+#### Planning
 > #### Form page layout design
-> <a href="#"><img width=600 src="/docs/savyy-cv_2022-08-08.svg"/></a>
+<img width=600 src="docs/savyy-cv_2022-08-08.svg"/>
+
+<br>
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Layout Editor Page
+The layout editor page is split into segments and represent a section of CV. Changes in segment stack order affect the visual layout of CV.
 
 <br>
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
