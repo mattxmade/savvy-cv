@@ -201,12 +201,6 @@ A tagging system allows multiple datasets to be added, allowing data to be swapp
 The layout editor page is split into segments and represent a section of CV. Changes in segment stack order affect the visual layout of CV.
 
 <br>
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-## Layout Editor Page
-The layout editor page is split into segments and represent a section of CV. Changes in segment stack order affect the visual layout of CV.
-
-<br>
 
 > #### Editor.js | React Class Component
 > ```js
